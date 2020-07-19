@@ -6,6 +6,9 @@
 void func_help(void);
 bool validacionArchivo(char *nombre);
 void func_fcfs(char *nombre);
-/*int func_sjf(char *nombre);
-int func_rr(char *nombre);*/
+void ordenar_procesos();
+void func_sjf(char *nombre);
+void func_rr(char *nombre, int qt);
+void clonarProcesos();
+/*int func_rr(char *nombre);*/
 #endif

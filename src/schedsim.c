@@ -35,8 +35,10 @@ int main (int argc, char *argv[]){
         }
         else if(strcmp(algoritmo, "sjf") == 0)
             printf("sjf \n");
-        else if(strcmp(algoritmo, "rr") == 0)
+        else if(strcmp(algoritmo, "rr") == 0){
             printf("rr \n");
+            func_rr(nombre_archivo, atoi(argv[3]));
+        }
         else
             printf("Error \n");
 	}
