@@ -5,10 +5,9 @@
 
 void func_help(void);
 bool validacionArchivo(char *nombre);
-void func_fcfs(char *nombre);
+void func_fcfs(void);
 void ordenar_procesos();
-void func_sjf(char *nombre);
-void func_rr(char *nombre, int qt);
+void func_sjf(void);
+void func_rr(int qt);
 void clonarProcesos();
-/*int func_rr(char *nombre);*/
 #endif

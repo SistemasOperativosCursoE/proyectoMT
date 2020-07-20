@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#define MAX 9999
 
 typedef struct{
     int proceso;
@@ -23,6 +24,9 @@ typedef struct{
     int burTime;
     int respTime;
     int termTime;
+    int waiTime;
+    int turnATime;
+    float normTurnATime;
 }temporales;
 temporales *temp;
 
@@ -83,7 +87,7 @@ bool validacionArchivo(char *nombre){
 
 void ordenar_procesos(){
     int i, j;
-    temp = (temporales *)malloc(cont*sizeof(temporales));
+    temp = (temporales *)malloc((cont+1)*sizeof(temporales));
     for(i=0; i<cont-1; i++){
         for(j=0; j<cont-i-1; j++) {   
             if( procc[j].arrTime > procc[j+1].arrTime ){
@@ -109,15 +113,21 @@ void ordenar_procesos(){
 }
 
 void clonarProcesos(){
-    for(int y=0; y<cont; y++){
+    for(int y=0; y<=cont; y++){
         temp[y].proceso = procc[y].proceso;
         temp[y].arrTime = procc[y].arrTime;
         temp[y].burTime = procc[y].burTime;
         temp[y].respTime = procc[y].respTime;
+        if(y==cont){
+            temp[y].proceso = -1;
+            temp[y].arrTime = -1;
+            temp[y].burTime = -1;
+            temp[y].respTime = -1;
+        }
     }
 }
 
-void func_fcfs(char *nombre){
+void func_fcfs(void){
     int sumBurst = 0, sumWT=0, sumTT=0, tmp;
     float promTT, promNTT, promWT, sumNTT=0;
     ordenar_procesos();
@@ -141,7 +151,7 @@ void func_fcfs(char *nombre){
         promTT, promNTT, promWT);
 }
 
-void func_rr(char *nombre, int qt){
+void func_rr(int qt){
     int i, sumWT=0, sumTT=0, t=0, vAnterior = -1;
     float promTT, promNTT, promWT, sumNTT=0;
     int quatum = qt;
@@ -164,7 +174,7 @@ void func_rr(char *nombre, int qt){
             procc[i].turnATime = time-procc[i].arrTime; 
             procc[i].waiTime = time - procc[i].arrTime - procc[i].burTime;
             procc[i].normTurnATime = procc[i].turnATime / procc[i].burTime;
-            temp[i].termTime = time;
+            //temp[i].termTime = time;
             printf("%d: runs %d-%d -> end = %d, (arr = %d), turn = %d, (burst = %d), wait = %d\n",
                 procc[i].proceso, time - quatum, time, time, procc[i].arrTime, procc[i].turnATime, procc[i].burTime, procc[i].waiTime);
             sumWT += procc[i].waiTime;
@@ -186,35 +196,49 @@ void func_rr(char *nombre, int qt){
         else
             i=0;
     }
-    promWT = sumWT / cont;
-    promTT = sumTT / cont;
-    promNTT = sumNTT / cont;
+    promWT = (float) sumWT / cont;
+    promTT = (float) sumTT / cont;
+    promNTT = sumNTT / (float) cont;
     printf("\nAverage turnaround time = %0.2f \nAverage normalized turnaround time = %0.2f \nAverage waiting time = %0.2f \n",
         promTT, promNTT, promWT);
 }
 
-void func_sjf(char *nombre){
-    /*int sumBurst = 0, sumWT=0, sumTT=0;
-    float promTT, promNTT, promWT, sumNTT=0;
+void func_sjf(void){
     int s,remain=0,time;
+    int sumWT=0, sumTT=0;
+    float promTT, promNTT, promWT, sumNTT=0;
     ordenar_procesos();
-    p[cont].rt= 999;
-    for(time=0; remain!=n; time++)
-    {
+    clonarProcesos();
+    temp[cont].respTime = MAX;
+    int contador = 0;
+    for(time=0;remain!=cont;time++){
         s=cont;
-        for(int i=0; i<n; i++)
-            if(procc[i].arrTime<=time && procc[i].respTime < p[s].rt && p[i].rt>0)
+        for(int i=0;i<cont;i++)
+            if(temp[i].arrTime<=time&&temp[i].respTime<temp[s].respTime&&temp[i].respTime>0)
                 s=i;
-        p[s].rt--;
-        if(p[s].rt == 0)
-        {
+        temp[s].respTime--;
+        if(temp[s].respTime == 0){
             remain++;
-            p[s].ct = time + 1;
-            p[s].tat = p[s].ct - p[s].at;
-            avgtat += p[s].tat;
-            p[s].wt = p[s].tat - p[s].bt;
-            avgwt += p[s].wt;
-            printf("P%d\t\t%d\t%d\t%d\t%d\t%d\n",p[s].no,p[s].at,p[s].bt,p[s].ct,p[s].tat,p[s].wt);
+            temp[s].termTime=time+1;
+            temp[s].turnATime=temp[s].termTime-temp[s].arrTime;
+            temp[s].waiTime=temp[s].turnATime-temp[s].burTime;
+            temp[s].normTurnATime = temp[s].turnATime / temp[s].burTime;
+            printf("%d: runs %d-%d -> end = %d, (arr = %d), turn = %d, (burst = %d), wait = %d\n",
+                temp[s].proceso, time-contador, time+1, time+1, temp[s].arrTime, temp[s].turnATime, temp[s].burTime, temp[s].waiTime);
+            sumWT += temp[s].waiTime;
+            sumTT += temp[s].turnATime;
+            sumNTT += temp[s].normTurnATime;
+            contador = 0;
         }
-    }*/
+        else{
+            printf("%d: runs %d-%d \n",
+                temp[s].proceso, time, time+1);
+            contador++;
+        }
+    }
+    promWT = (float) sumWT / cont;
+    promTT = (float) sumTT / cont;
+    promNTT = sumNTT / (float) cont;
+    printf("\nAverage turnaround time = %0.2f \nAverage normalized turnaround time = %0.2f \nAverage waiting time = %0.2f \n",
+        promTT, promNTT, promWT);
 }

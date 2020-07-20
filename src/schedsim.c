@@ -31,13 +31,15 @@ int main (int argc, char *argv[]){
         algoritmo = argv[2];
         if(strcmp(algoritmo, "fcfs") == 0){
             printf("fcfs \n");
-            func_fcfs(nombre_archivo);
+            func_fcfs();
         }
-        else if(strcmp(algoritmo, "sjf") == 0)
+        else if(strcmp(algoritmo, "sjf") == 0){
             printf("sjf \n");
+            func_sjf();
+        }
         else if(strcmp(algoritmo, "rr") == 0){
             printf("rr \n");
-            func_rr(nombre_archivo, atoi(argv[3]));
+            func_rr(atoi(argv[3]));
         }
         else
             printf("Error \n");
