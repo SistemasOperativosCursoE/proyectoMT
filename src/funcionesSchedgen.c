@@ -22,7 +22,8 @@ bool generar_procesos(int nProceso, float pa1, float pb1, char *nombre){
     int ta = 0, tb = 1, contador = 0;
     float pa = pa1, pb = pb1;
     FILE *fd;
-    char at[100], bt[100], linea[50];
+    char at[100], bt[100];
+    char linea[100];
     srand((unsigned) time(NULL));
     fd = fopen(nombre, "w");
     while(flag1){
@@ -39,7 +40,7 @@ bool generar_procesos(int nProceso, float pa1, float pb1, char *nombre){
                     strcat(linea, bt);
                     if(contador<nProceso)
                         strcat(linea, "\n");
-                    fprintf(fd, linea);
+                    fputs(linea, fd);
                     at[0] = '\0';
                     bt[0] = '\0';
                     linea[0] = '\0';

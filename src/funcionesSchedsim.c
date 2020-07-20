@@ -149,6 +149,8 @@ void func_fcfs(void){
     promNTT = sumNTT / (float) cont;
     printf("\nAverage turnaround time = %f \nAverage normalized turnaround time = %f \nAverage waiting time = %f \n",
         promTT, promNTT, promWT);
+    free(procc);
+    free(temp);
 }
 
 void func_rr(int qt){
@@ -174,7 +176,6 @@ void func_rr(int qt){
             procc[i].turnATime = time-procc[i].arrTime; 
             procc[i].waiTime = time - procc[i].arrTime - procc[i].burTime;
             procc[i].normTurnATime = procc[i].turnATime / procc[i].burTime;
-            //temp[i].termTime = time;
             printf("%d: runs %d-%d -> end = %d, (arr = %d), turn = %d, (burst = %d), wait = %d\n",
                 procc[i].proceso, time - quatum, time, time, procc[i].arrTime, procc[i].turnATime, procc[i].burTime, procc[i].waiTime);
             sumWT += procc[i].waiTime;
@@ -201,6 +202,8 @@ void func_rr(int qt){
     promNTT = sumNTT / (float) cont;
     printf("\nAverage turnaround time = %0.2f \nAverage normalized turnaround time = %0.2f \nAverage waiting time = %0.2f \n",
         promTT, promNTT, promWT);
+    free(procc);
+    free(temp);
 }
 
 void func_sjf(void){
@@ -241,4 +244,6 @@ void func_sjf(void){
     promNTT = sumNTT / (float) cont;
     printf("\nAverage turnaround time = %0.2f \nAverage normalized turnaround time = %0.2f \nAverage waiting time = %0.2f \n",
         promTT, promNTT, promWT);
+    free(procc);
+    free(temp);
 }

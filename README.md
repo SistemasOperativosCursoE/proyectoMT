@@ -36,3 +36,12 @@ Ejecutar el simulador del procesos en base a un algoritmo:
 ```bash
 ./schedsim schedtimes.dat [fcfs|sjf|rr] [quatum]
 ```
+
+Ejecutar el generador de procesos:
+N-> es el numero de procesos que se desean generar.
+pa-> probabilidad para generar un valor para arrive time en un proceso.
+pb-> probabilidad para generar un valor para burst time en un proceso.
+nameFile-> es el nombre del archivo con que se va a crear para guardar la generacion de los procesos.
+```bash
+./schedgen N pa pb nameFile.dat
+```

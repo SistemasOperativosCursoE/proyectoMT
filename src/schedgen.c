@@ -28,7 +28,7 @@ int main (int argc, char *argv[]){
         nombre_archivo = argv[4];
         if((pa >= 0 && pa<=1) && (pb >= 0 && pb<=1)){
             bool retorno = generar_procesos(nProceso, pa, pb, nombre_archivo);
-            printf(retorno ? "true" : "false");
+            printf(retorno ? "Archivo generado con exito\n" : "Error al generar el archivo\n");
         }
         else{
             printf("Error");
