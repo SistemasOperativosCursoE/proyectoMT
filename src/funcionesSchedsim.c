@@ -1,4 +1,4 @@
-#include "../include/funcionesSchedgen.h"
+#include "../include/funcionesSchedsim.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>

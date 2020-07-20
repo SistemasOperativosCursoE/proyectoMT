@@ -1,5 +1,5 @@
-#ifndef estructura_schedgen
-#define estructura_schedgen
+#ifndef estructura_schedsim
+#define estructura_schedsim
 #include <stdbool.h> 
 #define MAXSTR 50
 

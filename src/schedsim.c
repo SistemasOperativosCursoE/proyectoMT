@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <ctype.h>
 #include "../include/funcionesSchedsim.h"
 #include <string.h>
 
@@ -25,7 +26,8 @@ int main (int argc, char *argv[]){
         arValido =  validacionArchivo(nombre_archivo);
         //fputs(arValido ? "true" : "false", stdout);
     }
-
+    printf("%s\n", argv[0]);
+    printf("%d\n", argc);
     //si el archivo es valido permite utilizar los comandos 
 	if(arValido == true){
         algoritmo = argv[2];
