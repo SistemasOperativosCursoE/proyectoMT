@@ -48,7 +48,7 @@ bool generar_procesos(int nProceso, float pa1, float pb1, char *nombre){
                 }
                 tb++;
             }
-            tb = 0;
+            tb = 1;
             flag2 = true;
         }
         ta++;

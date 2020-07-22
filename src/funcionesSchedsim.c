@@ -30,6 +30,16 @@ typedef struct{
 }temporales;
 temporales *temp;
 
+typedef struct{
+    int id;
+    int cont;
+    int waiTime;
+    int turnATime;
+    float normTurnATime;
+}rafagas;
+rafagas *burst;
+
+int max = 0, min = 0;
 int cont = 0, flag=0,remaining, tempo;
 
 void func_help(void){
@@ -127,7 +137,7 @@ void clonarProcesos(){
     }
 }
 
-void func_fcfs(void){
+void func_fcfs(char modo){
     int sumBurst = 0, sumWT=0, sumTT=0, tmp;
     float promTT, promNTT, promWT, sumNTT=0;
     ordenar_procesos();
@@ -141,19 +151,26 @@ void func_fcfs(void){
         sumWT += procc[x].waiTime;
         sumTT += procc[x].turnATime;
         sumNTT += procc[x].normTurnATime;
-        printf("%d: runs %d-%d -> end = %d, (arr = %d), turn = %d, (burst = %d), wait = %d\n",
-            procc[x].proceso, tmp, sumBurst, sumBurst, procc[x].arrTime, procc[x].turnATime, procc[x].burTime, procc[x].waiTime);
+        if(modo == 'd'){
+            printf("%d: runs %d-%d -> end = %d, (arr = %d), turn = %d, (burst = %d), wait = %d\n",
+                procc[x].proceso, tmp, sumBurst, sumBurst, procc[x].arrTime, procc[x].turnATime, procc[x].burTime, procc[x].waiTime);
+        }
     }
     promWT = (float) sumWT / cont;
     promTT = (float) sumTT / cont;
     promNTT = sumNTT / (float) cont;
-    printf("\nAverage turnaround time = %f \nAverage normalized turnaround time = %f \nAverage waiting time = %f \n",
-        promTT, promNTT, promWT);
+    if(modo == 'd'){
+        printf("\nAverage turnaround time = %f \nAverage normalized turnaround time = %f \nAverage waiting time = %f \n",
+            promTT, promNTT, promWT);
+    }
+    func_max_min();
+    generar_promedio_rafaga('f');
+    free(burst);
     free(procc);
     free(temp);
 }
 
-void func_rr(int qt){
+void func_rr(char modo, int qt){
     int i, sumWT=0, sumTT=0, t=0, vAnterior = -1;
     float promTT, promNTT, promWT, sumNTT=0;
     int quatum = qt;
@@ -176,8 +193,10 @@ void func_rr(int qt){
             procc[i].turnATime = time-procc[i].arrTime; 
             procc[i].waiTime = time - procc[i].arrTime - procc[i].burTime;
             procc[i].normTurnATime = procc[i].turnATime / procc[i].burTime;
-            printf("%d: runs %d-%d -> end = %d, (arr = %d), turn = %d, (burst = %d), wait = %d\n",
-                procc[i].proceso, time - quatum, time, time, procc[i].arrTime, procc[i].turnATime, procc[i].burTime, procc[i].waiTime);
+            if(modo == 'd'){
+                printf("%d: runs %d-%d -> end = %d, (arr = %d), turn = %d, (burst = %d), wait = %d\n",
+                    procc[i].proceso, time - quatum, time, time, procc[i].arrTime, procc[i].turnATime, procc[i].burTime, procc[i].waiTime);
+            }
             sumWT += procc[i].waiTime;
             sumTT += procc[i].turnATime;
             sumNTT += procc[i].normTurnATime;
@@ -185,8 +204,10 @@ void func_rr(int qt){
         }
         else{
             if(vAnterior != time){
-                printf("%d: runs %d-%d \n",
-                    procc[i].proceso, time - quatum, time);
+                if(modo == 'd'){
+                    printf("%d: runs %d-%d \n",
+                        procc[i].proceso, time - quatum, time);
+                }
                 vAnterior = time;
             }
         }
@@ -200,13 +221,17 @@ void func_rr(int qt){
     promWT = (float) sumWT / cont;
     promTT = (float) sumTT / cont;
     promNTT = sumNTT / (float) cont;
-    printf("\nAverage turnaround time = %0.2f \nAverage normalized turnaround time = %0.2f \nAverage waiting time = %0.2f \n",
-        promTT, promNTT, promWT);
+    if(modo == 'd'){
+        printf("\nAverage turnaround time = %0.2f \nAverage normalized turnaround time = %0.2f \nAverage waiting time = %0.2f \n",
+            promTT, promNTT, promWT);
+    }
+    func_max_min();
+    free(burst);
     free(procc);
     free(temp);
 }
 
-void func_sjf(void){
+void func_sjf(char modo){
     int s,remain=0,time;
     int sumWT=0, sumTT=0;
     float promTT, promNTT, promWT, sumNTT=0;
@@ -226,24 +251,85 @@ void func_sjf(void){
             temp[s].turnATime=temp[s].termTime-temp[s].arrTime;
             temp[s].waiTime=temp[s].turnATime-temp[s].burTime;
             temp[s].normTurnATime = temp[s].turnATime / temp[s].burTime;
-            printf("%d: runs %d-%d -> end = %d, (arr = %d), turn = %d, (burst = %d), wait = %d\n",
-                temp[s].proceso, time-contador, time+1, time+1, temp[s].arrTime, temp[s].turnATime, temp[s].burTime, temp[s].waiTime);
+            if(modo == 'd'){
+                printf("%d: runs %d-%d -> end = %d, (arr = %d), turn = %d, (burst = %d), wait = %d\n",
+                    temp[s].proceso, time-contador, time+1, time+1, temp[s].arrTime, temp[s].turnATime, temp[s].burTime, temp[s].waiTime);
+            }
             sumWT += temp[s].waiTime;
             sumTT += temp[s].turnATime;
             sumNTT += temp[s].normTurnATime;
             contador = 0;
         }
         else{
-            printf("%d: runs %d-%d \n",
-                temp[s].proceso, time, time+1);
+            if(modo == 'd'){
+                printf("%d: runs %d-%d \n",
+                    temp[s].proceso, time, time+1);
+            }
             contador++;
         }
     }
     promWT = (float) sumWT / cont;
     promTT = (float) sumTT / cont;
     promNTT = sumNTT / (float) cont;
-    printf("\nAverage turnaround time = %0.2f \nAverage normalized turnaround time = %0.2f \nAverage waiting time = %0.2f \n",
-        promTT, promNTT, promWT);
+    if(modo == 'd'){
+        printf("\nAverage turnaround time = %0.2f \nAverage normalized turnaround time = %0.2f \nAverage waiting time = %0.2f \n",
+            promTT, promNTT, promWT);
+    }
+    func_max_min();
+    free(burst);            
     free(procc);
     free(temp);
+}
+
+void func_max_min(void){
+    int maximo, minimo;
+    maximo = procc[0].burTime;
+    minimo = procc[0].burTime;
+    for(int i=1; i<cont; i++){
+        if(procc[i].burTime > maximo)
+            maximo = procc[i].burTime;
+        if(procc[i].burTime < minimo)
+            minimo = procc[i].burTime;
+    }
+    max = maximo;
+    min = minimo;
+    burst = (rafagas *)malloc( max *sizeof(rafagas));
+    for(int x = 1; x <= max; x++){
+        burst[x-1].id = x;
+        burst[x-1].cont = 0;
+        burst[x-1].waiTime = 0;
+        burst[x-1].turnATime = 0;
+        burst[x-1].normTurnATime = 0.0;
+    }
+}
+
+void generar_promedio_rafaga(char algoritmo){
+    if(algoritmo == 'f' || algoritmo == 'r'){
+        for(int x = 0; x <= max; x++){
+            for(int w = 0; w < cont; w++){
+                if(burst[x].id == procc[w].burTime){
+                    burst[x].cont += 1;
+                    burst[x].waiTime = procc[w].waiTime;
+                    burst[x].turnATime = procc[w].turnATime;
+                    burst[x].normTurnATime = procc[w].normTurnATime;
+                }
+            }
+        }
+    }
+    else if(algoritmo == 's'){
+        for(int x = 0; x <= max; x++){
+            for(int w = 0; w < cont; w++){
+                if(burst[x].id == temp[w].burTime){
+                    burst[x].cont += 1;
+                    burst[x].waiTime = temp[w].waiTime;
+                    burst[x].turnATime = temp[w].turnATime;
+                    burst[x].normTurnATime = temp[w].normTurnATime;
+                }
+            }
+        }
+    }
+    for(int x = 0; x <=  max; x++){
+        printf("%d %d %d %0.2f %d \n", 
+            burst[x].id, burst[x].waiTime, burst[x].turnATime, burst[x].normTurnATime, burst[x].cont);
+    }
 }

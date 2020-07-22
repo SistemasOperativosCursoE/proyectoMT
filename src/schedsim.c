@@ -26,22 +26,20 @@ int main (int argc, char *argv[]){
         arValido =  validacionArchivo(nombre_archivo);
         //fputs(arValido ? "true" : "false", stdout);
     }
-    printf("%s\n", argv[0]);
-    printf("%d\n", argc);
     //si el archivo es valido permite utilizar los comandos 
 	if(arValido == true){
         algoritmo = argv[2];
         if(strcmp(algoritmo, "fcfs") == 0){
-            printf("fcfs \n");
-            func_fcfs();
+            printf("Algoritmo fcfs \n");
+            func_fcfs('d');
         }
         else if(strcmp(algoritmo, "sjf") == 0){
-            printf("sjf \n");
-            func_sjf();
+            printf("Algoritmo  sjf \n");
+            func_sjf('d');
         }
         else if(strcmp(algoritmo, "rr") == 0){
-            printf("rr \n");
-            func_rr(atoi(argv[3]));
+            printf("Algoritmo rr \n");
+            func_rr('d',atoi(argv[3]));
         }
         else
             printf("Error \n");
