@@ -7,9 +7,9 @@ algoritmos de planificación de procesos, tales como: FCFS, SJF y RR.
 
 El proyecto MidTerm está estructurado de la siguiente manera:
 
->> include: "Incluye las caberas y funciones protipos para su implementación en los archivos de funciones en src.
+>> extension .h: "Incluye las caberas y funciones protipos para su implementación en los archivos de funciones .c.
 
->> src: "Incluye el código fuente para schedsim, schedgen, schedstats y los archivos funciones para cada programa sched__"
+>> extension .c: "Incluye el código fuente para schedsim, schedgen, schedstats y los archivos funciones para cada programa ya mencionado"
 
 ## Compilación
 
@@ -20,7 +20,7 @@ Construir Makefile
 make
 ```
 
-Eliminar archivos que fueron construidos con MAkefile:
+Eliminar archivos que fueron construidos con Makefile:
 ```bash
 make clean
 ```
@@ -33,8 +33,13 @@ Muestra una ayuda de como se deberia ejecutar los programas de simulacion, gener
 ```
 
 Ejecutar el simulador del procesos en base a un algoritmo:
+nameFile-> es el nombre del archivo con que se va a leer para obtener los procesos
+fcfs -> Simulador para el algoritmo First Come First Served
+sjf -> Simulador para el algoritmo Shortest Job First
+rr -> Simulador para el algoritmo Round Robin
+q -> es el quatum que se va a ejecutar en el algoritmo Roun Robin
 ```bash
-./schedsim schedtimes.dat [fcfs|sjf|rr] [quatum]
+./schedsim nameFile.dat [fcfs|sjf|rr] [q]
 ```
 
 Ejecutar el generador de procesos:
@@ -45,3 +50,12 @@ nameFile-> es el nombre del archivo con que se va a crear para guardar la genera
 ```bash
 ./schedgen N pa pb nameFile.dat
 ```
+
+Ejecutar el generador de archivos para graficos:
+nameFile-> es el nombre del archivo de donde se van a leer los procesos, puede usarse cualquier extenxion que tenga el archivo de lectura tal como txt.
+```bash
+./schedstats nameFile.dat
+```
+
+## Generar gráficos con el archivo python a partir de los 3 archivos
+Con generadorGraficosStats.py se generara automaticamente los archivos png de los graficos.

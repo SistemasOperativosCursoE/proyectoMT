@@ -7,25 +7,28 @@ all: schedsim schedgen schedstats
 schedsim: schedsim.o funcionesSchedsim.o 
 	gcc schedsim.o funcionesSchedsim.o $(CFLAGS) -o $@
 
-schedsim.o : ./src/schedsim.c
+schedsim.o : ./schedsim.c
 	gcc $(CFLAGS) -c $^
 
-funcionesSchedsim.o : ./src/funcionesSchedsim.c
+funcionesSchedsim.o : ./funcionesSchedsim.c
 	gcc $(CFLAGS) -c $^
 
 schedgen: schedgen.o funcionesSchedgen.o 
 	gcc schedgen.o funcionesSchedgen.o $(CFLAGS) -o $@
 
-schedgen.o : ./src/schedgen.c
+schedgen.o : ./schedgen.c
 	gcc $(CFLAGS) -c $^
 
-funcionesSchedgen.o : ./src/funcionesSchedgen.c
+funcionesSchedgen.o : ./funcionesSchedgen.c
 	gcc $(CFLAGS) -c $^
 
-schedstats: schedstats.o funcionesSchedsim.o
-	gcc schedstats.o funcionesSchedsim.o $(CFLAGS) -o $@
+schedstats: schedstats.o funcionesSchedsim.o funcionesSchedstats.o
+	gcc schedstats.o funcionesSchedsim.o funcionesSchedstats.o $(CFLAGS) -o $@
 
-schedstats.o : ./src/schedstats.c
+schedstats.o : ./schedstats.c
+	gcc $(CFLAGS) -c $^
+
+funcionesSchedstats.o : ./funcionesSchedstats.c
 	gcc $(CFLAGS) -c $^
 
 clean:

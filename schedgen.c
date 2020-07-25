@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
- #include "../include/funcionesSchedgen.h"
+ #include "./funcionesSchedgen.h"
 #include <string.h>
 
 int main (int argc, char *argv[]){
@@ -11,15 +11,11 @@ int main (int argc, char *argv[]){
     int nProceso;
 
 	//muestra el menu help si se usa el comando -h solamente
-	// if( argc>2 && strcmp(argv[1],"-h") == 0){
-	// 	func_help();
-	// }
-	
-	//infica el uso del comando cuando hay parametros insuficientes
-	 if (argc != 5 ) {
-        fprintf(stderr, "Uso: %s COMANDO ARCHIVO  ...\n", argv[0]);
-        // func_help();
-    }
+	if( argc != 5 && strcmp(argv[1],"-h") == 0){
+		fprintf(stderr, "Uso: %s COMANDO ARCHIVO  ...\n", argv[0]);
+        func_help();
+	}
+
     //si el archivo es valido permite utilizar los comandos 
 	if(argc == 5){
         nProceso = atoi(argv[1]);

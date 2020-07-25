@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include "../include/funcionesSchedsim.h"
+#include "./funcionesSchedsim.h"
+#include "./funcionesSchedstats.h"
 #include <string.h>
 
 int main (int argc, char *argv[]){
@@ -10,17 +11,12 @@ int main (int argc, char *argv[]){
 	char *nombre_archivo;
 
 	//muestra el menu help si se usa el comando -h solamente
-	if( argc>2 && strcmp(argv[1],"-h") == 0){
-		func_help();
+	if( argc != 2 || strcmp(argv[1],"-h") == 0){
+		fprintf(stderr, "Uso: %s COMANDO ARCHIVO  ...\n", argv[0]);
+        func_help_Stats();
 	}
-	
-	//infica el uso del comando cuando hay parametros insuficientes
-	 if (argc < 2 || argc > 2) {
-        fprintf(stderr, "Uso: %s COMANDO ARCHIVO  ...\n", argv[0]);
-        func_help();
-    }
 
-	if(argc == 2){
+	if(argc == 2 && strcmp(argv[1],"-h") != 0){
         nombre_archivo = argv[1];
         arValido =  validacionArchivo(nombre_archivo);
         //fputs(arValido ? "true" : "false", stdout);

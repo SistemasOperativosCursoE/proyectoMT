@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include "../include/funcionesSchedsim.h"
+#include "./funcionesSchedsim.h"
 #include <string.h>
 
 int main (int argc, char *argv[]){
